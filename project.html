@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insta ID + Bio Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#0f172a,#020617);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 16px;
+      width: 380px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.6);
+    }
+    h2 { text-align: center; }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: none;
+    }
+    input { background: #334155; color: white; }
+    button {
+      background: #ec4899;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .results {
+      margin-top: 15px;
+      max-height: 140px;
+      overflow-y: auto;
+      background: #020617;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    .id, .bio {
+      padding: 6px;
+      border-bottom: 1px solid #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+    .copy {
+      background: #22c55e;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>🔥 Insta ID + Bio Maker</h2>
+
+  <input type="text" id="name" placeholder="Enter your name">
+  <input type="text" id="keyword" placeholder="Keyword (optional)">
+
+  <button onclick="generateAll()">Generate 🔥</button>
+
+  <h3>✨ Usernames</h3>
+  <div class="results" id="results"></div>
+
+  <h3>💬 Bio Ideas</h3>
+  <div class="results" id="bios"></div>
+</div>
+
+<script>
+function randomNum() {
+  return Math.floor(Math.random() * 9999);
+}
+
+function stylish(text) {
+  const styles = [
+    text,
+    text.split('').join('_'),
+    text.toUpperCase(),
+    text.split('').join('.'),
+    'x' + text + 'x',
+    '★' + text + '★',
+    '_' + text + '_'
+  ];
+  return styles[Math.floor(Math.random() * styles.length)];
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text);
+  alert('Copied: ' + text);
+}
+
+function generateAll() {
+  const name = document.getElementById('name').value.toLowerCase().replace(/\s+/g, '');
+  const keyword = document.getElementById('keyword').value.toLowerCase().replace(/\s+/g, '');
+
+  const resultsDiv = document.getElementById('results');
+  const biosDiv = document.getElementById('bios');
+
+  resultsDiv.innerHTML = '';
+  biosDiv.innerHTML = '';
+
+  if (!name) {
+    alert('Enter your name');
+    return;
+  }
+
+  let ids = [];
+  for (let i = 0; i < 20; i++) {
+    const base = [
+      `${name}${randomNum()}`,
+      `${name}_${keyword}${randomNum()}`,
+      `${keyword}_${name}${randomNum()}`,
+      `${name}.${keyword}${randomNum()}`,
+      `the_${name}${randomNum()}`,
+      `${name}_official${randomNum()}`,
+      `${name}${keyword}${randomNum()}`,
+      `${name}_x${randomNum()}`
+    ];
+
+    let id = stylish(base[Math.floor(Math.random() * base.length)]);
+    ids.push(id);
+  }
+
+  ids.forEach(i => {
+    const div = document.createElement('div');
+    div.className = 'id';
+    div.innerHTML = `${i} <span class='copy' onclick="copyText('${i}')">Copy</span>`;
+    resultsDiv.appendChild(div);
+  });
+
+  const bioTemplates = [
+    `😎 ${name} | Living my vibe`,
+    `🔥 Official ${name} account`,
+    `✨ Dream big. Hustle harder.`,
+    `😈 Attitude depends on you`,
+    `📍 India | 💯 Real vibes`,
+    `💔 Broken but stronger`,
+    `🎯 Focused | Silent moves`,
+    `🚀 Future billionaire`,
+    `👑 King of my world`,
+    `❤️ Single | Happy`
+  ];
+
+  for (let i = 0; i < 10; i++) {
+    let bio = bioTemplates[Math.floor(Math.random() * bioTemplates.length)];
+    const div = document.createElement('div');
+    div.className = 'bio';
+    div.innerHTML = `${bio} <span class='copy' onclick="copyText('${bio}')">Copy</span>`;
+    biosDiv.appendChild(div);
+  }
+}
+</script>
+
+</body>
+</html>
